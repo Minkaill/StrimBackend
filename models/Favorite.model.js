@@ -7,10 +7,8 @@ const FavoriteSchema = mongoose.Schema({
     },
     products: [
         {
-            productId: {
-                type: mongoose.SchemaTypes.ObjectId,
-                ref: 'Product',
-            },
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: 'Product',
         },
     ],
 })

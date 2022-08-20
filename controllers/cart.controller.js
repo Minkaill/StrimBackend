@@ -12,11 +12,11 @@ module.exports.cartController = {
                 userId: setUser._id
             })
             const setCartId = String(setCart[0]._id)
-            res.json(await Cart.findById(setCartId))
+            res.json(await Cart.findById(setCartId).populate('products'))
         } catch (e) {
             res.json(e)
         }
-    }, 
+    },
     postCart: async (req, res) => {
         try {
             const { userId } = req.params
@@ -43,7 +43,23 @@ module.exports.cartController = {
 
             if (setProduct.left < 1) {
                 return res.json("Нет на складе")
+            } 
+
+            
+            const testSetCart = setCart[0].products
+            if (testSetCart[0]) {
+                for (let i = 0; i < testSetCart.length; i++)  {
+                    if (String(testSetCart[i].productId) === String(product)) {
+                        return res.json('Продукт уже в корзине')
+                    }
+                }
             }
+
+            await Product.findByIdAndUpdate(product, {
+                left: setProduct.left - 1
+            })
+
+        
 
             await Cart.findByIdAndUpdate(setCartId, {
                 $push: {
@@ -53,9 +69,6 @@ module.exports.cartController = {
                 }
             })
 
-            await Product.findByIdAndUpdate(product, {
-                left: setProduct.left - 1
-            })
 
             res.json("Успешно добавлен в корзину")
 
