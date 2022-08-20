@@ -31,8 +31,8 @@ module.exports.productController = {
       } else {
         setArr.setProducts = await Product.find()
       }
-      console.log(setArr.setProducts)
-      res.json('gg')
+      
+      res.json(setArr.setProducts)
     } catch (error) {
       res.json(error);
     }
