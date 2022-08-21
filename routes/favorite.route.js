@@ -2,7 +2,7 @@ const { Router } = require('express');
 const router = Router();
 const { favoriteController } = require('../controllers/favorite.controller');
 
-// router.get('/favorite/:userId', cartController.getCart);
+router.get('/favorite/:userId', favoriteController.getFavorite);
 // router.post('/cart/:userId', cartController.postCart);
 router.post('/favorite/add/:userId',  favoriteController.productAddFavorite);
 // router.patch('/cart/inc/:userId', cartController.productIncCart);
