@@ -15,7 +15,6 @@ module.exports.favoriteController = {
         } catch (e) {
             res.json(e)
         }
-
     },
     productAddFavorite: async (req, res) => {
         try {

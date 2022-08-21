@@ -38,6 +38,53 @@ module.exports.productController = {
     }
   },
 
+  getChasi: async (req, res) => {
+    try {
+      res.json(await Product.find({category: 'Часы'}))
+    } catch (error) {
+      res.json(error);
+    }
+  },
+  
+  getBruks: async (req, res) => {
+    try {
+      res.json(await Product.find({category: 'Брюки'}))
+    } catch (error) {
+      res.json(error);
+    }
+  },
+  
+  getOchki: async (req, res) => {
+    try {
+      res.json(await Product.find({category: 'Очки'}))
+    } catch (error) {
+      res.json(error);
+    }
+  },
+  
+  getObuv: async (req, res) => {
+    try {
+      res.json(await Product.find({category: 'Обувь'}))
+    } catch (error) {
+      res.json(error);
+    }
+  },
+  
+  getRubashki: async (req, res) => {
+    try {
+      res.json(await Product.find({category: 'Рубашки'}))
+    } catch (error) {
+      res.json(error);
+    }
+  },
+
+  getCostums: async (req, res) => {
+    try {
+      res.json(await Product.find({category: 'Костюмы'}))
+    } catch (error) {
+      res.json(error);
+    }
+  },
 
   patchProduct: async (req, res) => {
     try {
