@@ -9,7 +9,7 @@ router.post('/cart/add/:userId',  cartController.productAddCart);
 router.patch('/cart/inc/:userId', cartController.productIncCart);
 router.patch('/cart/dec/:userId', cartController.productDecCart);
 router.delete('/cart/delete/:userId', cartController.productDeleteCart)
-router.delete('/cart/reset/:userId', cartController.productResetCart)
+router.delete('/cart/clear/:userId', cartController.productResetCart)
 
 // router.patch('/cart', );
 

@@ -15,29 +15,26 @@ module.exports.productController = {
   },
 
 
-
-  // getProducts: async (req, res) => {
-  //   try {
-  //     const { category, data } = req.body
-  //     const setProducts = {
-  //       set: null
-  //     }
-  //     if (String(type) === 'category') {
-  //       setProducts.set = await Product.find({ category: data })
-  //       res.json(setProducts.set);
-  //     }
-  //   } catch (error) {
-  //     res.json(error);
-  //   }
-  // },
-
-
+  
   getProducts: async (req, res) => {
     try {
-      const getAllProducts = await Product.find()
-      res.json(getAllProducts)
+      const { category, size } = req.body
+      const setArr = {
+        setProducts: null
+      }
+      if (category && size) {
+        setArr.setProducts = await Product.find({category, size})
+      } else if (category) {
+        setArr.setProducts = await Product.find({category})
+      } else if (size) {
+        setArr.setProducts = await Product.find({size})
+      } else {
+        setArr.setProducts = await Product.find()
+      }
+      
+      res.json(setArr.setProducts)
     } catch (error) {
-      res.json(error)
+      res.json(error);
     }
   },
 

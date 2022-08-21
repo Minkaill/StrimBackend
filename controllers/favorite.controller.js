@@ -1,103 +1,51 @@
 const Favorite = require('../models/Favorite.model.js')
 const Product = require('../models/Product.model.js')
+const User = require('../models/User.model.js')
 
 module.exports.favoriteController = {
     productAddFavorite: async (req, res) => {
         try {
-            const { cartId } = req.params
+            const { userId } = req.params
+            const setUser = await User.findById(userId)
+            const setFavorite = await Favorite.find({
+                userId: setUser._id
+            })
+            const setFavoriteId = String(setFavorite[0]._id)
+
             const { product } = req.body
 
-            const setProduct = await Product.findById(product)
-
-            if (setProduct.left < 1) {
-                return res.json("Нет на складе")
-            }
-
-            await Cart.findByIdAndUpdate(cartId, {
+            await Favorite.findByIdAndUpdate(setFavoriteId, {
                 $push: {
-                    products: {
-                        productId: product
-                    }
+                    products: product
                 }
             })
-
-            await Product.findByIdAndUpdate(product, {
-                left: setProduct.left - 1
-            })
-
-            res.json("Успешно добавлен в корзину")
-
+            
+            
+            res.json("Успешно добавлен в фавориты")
         } catch (e) {
             res.json(e)
         }
     },
-    productIncCart: async (req, res) => {
+    productDeleteFavorite: async (req, res) => {
         try {
-            const { cartId } = req.params
-            const { product } = req.body
-
-            const setCart = await Cart.findById(cartId)
-            const setProduct = await Product.findById(product)
-
-            if (setProduct.left < 1) {
-                return res.json("Нет на складе")
-            }
-
-            const setProducts = setCart.products.map((el) => {
-                if (String(el.productId) === String(setProduct._id)) {
-                    el.amount += 1
-                }
-                // res.json(el.productId)
-                return el
+            const { userId } = req.params
+            const setUser = await User.findById(userId)
+            const setFavorite = await Favorite.find({
+                userId: setUser._id
             })
+            const setFavoriteId = String(setFavorite[0]._id)
 
-
-
-            await Cart.findByIdAndUpdate(cartId, {
+            const { product } = req.body
+            
+            const setProduct = await Product.findById(product)
+            const setProducts = setFavorite.products.filter((el) => String(el.productId) !== String(setProduct._id))
+            
+            res.json("Успешно добавлен в фавориты")
+            await Favorite.findByIdAndUpdate(setFavoriteId, {
                 products: setProducts
             })
-
-            await Product.findByIdAndUpdate(product, {
-                left: setProduct.left - 1
-            })
-
-            // res.json(setProducts)
-            res.json(await Cart.findById(cartId))
-
-        } catch (e) {
-            res.json(e)
-        }
-    },
-    productDecCart: async (req, res) => {
-        try {
-            const { cartId } = req.params
-            const { product } = req.body
-
-            const setCart = await Cart.findById(cartId)
-            const setProduct = await Product.findById(product)
-
-            const setProducts = setCart.products.map((el) => {
-                if (String(el.productId) === String(setProduct._id)) {
-                    el.amount -= 1
-                    return el
-                }
-                // res.json(el.productId)
-                return el
-            })
-
-
-
-            await Cart.findByIdAndUpdate(cartId, {
-                products: setProducts
-            })
-
-            await Product.findByIdAndUpdate(product, {
-                left: setProduct.left + 1
-            })
-
-            // res.json(setProducts)
-            res.json(await Cart.findById(cartId))
-
+            
+            
         } catch (e) {
             res.json(e)
         }
