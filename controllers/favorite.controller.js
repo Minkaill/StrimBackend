@@ -51,13 +51,13 @@ module.exports.favoriteController = {
             const { product } = req.body
             
             const setProduct = await Product.findById(product)
-            const setProducts = setFavorite.products.filter((el) => String(el.productId) !== String(setProduct._id))
+            const setProducts = setFavorite[0].products.filter((el) => String(el) !== String(setProduct._id))
             
-            res.json("Успешно добавлен в фавориты")
             await Favorite.findByIdAndUpdate(setFavoriteId, {
                 products: setProducts
             })
             
+            res.json(await Favorite.findById(setFavoriteId).populate('products'))
             
         } catch (e) {
             res.json(e)
